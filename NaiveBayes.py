@@ -1,11 +1,9 @@
 import math
-HomeDirectory = "/home/path/"
+import sys;
+HomeDirectory = "/home/panindra/Desktop/Dm/Assignments/Assignment4/dataset/"
 
-with open(HomeDirectory+ "poker.train")as f: #training file
-    training_data = f.readlines()
-
-with open(HomeDirectory+ "poker.test")as f: #test file
-    test_data = f.readlines()
+training_data = []
+test_data = []
 
 def getMaxLengthOfAttributes(data):
     max_attribute_val = 0
@@ -62,12 +60,14 @@ def find_TP_FN_FP_TN(p_of_class_a, p_attr_with_class_a_dict, p_of_class_b, p_att
         missed_ele = list( set(range_of_attr) - set(attr_present_in_eachLine_a) )
         for i in missed_ele:
             ele = "{0}:{1}".format(i,0)
-            val_a = val_a * p_attr_with_class_a_dict.get(ele)
+            if(ele in p_attr_with_class_a_dict) :
+              val_a = val_a * p_attr_with_class_a_dict.get(ele)
 
         missed_ele = list( set(range_of_attr) - set(attr_present_in_eachLine_b) )
         for i in missed_ele:
             ele = "{0}:{1}".format(i,0)
-            val_b = val_b * p_attr_with_class_b_dict.get(ele)
+            if(ele in p_attr_with_class_b_dict) :
+              val_b = val_b * p_attr_with_class_b_dict.get(ele)
 
         val_a = val_a * p_of_class_a
         val_b = val_b * p_of_class_b
@@ -82,7 +82,7 @@ def find_TP_FN_FP_TN(p_of_class_a, p_attr_with_class_a_dict, p_of_class_b, p_att
         elif class_of_this_instance == -1 and class_of_this_instance == int(words[0]):
             true_negative = true_negative + 1
 
-    print(true_positive, false_negative, false_positive, true_negative)
+    print(str(true_positive)+" "+str(false_negative)+" "+str(false_positive)+" "+str(true_negative));
 
 
 def computeClassifier():
@@ -160,5 +160,10 @@ def main():
     computeClassifier()
 
 if __name__ == "__main__":
+    with open(HomeDirectory+ str(sys.argv[1]))as f:
+      training_data = f.readlines()
+
+    with open(HomeDirectory+ str(sys.argv[2]))as f:
+      test_data = f.readlines()
 
     main()
